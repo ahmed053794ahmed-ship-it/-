@@ -1,0 +1,100 @@
+import React, { useState } from 'react';
+
+export default function TradingPlatform() {
+  const [currentPage, setCurrentPage] = useState('home'); // 'home' or 'payment'
+  const [copied, setCopied] = useState(false);
+  const walletAddress = "TGdDMw5bdufBjjJawNDqTS43zc8nT1cRFM";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(walletAddress);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white font-sans">
+      {/* شريط التنقل العلوي */}
+      <nav className="flex justify-between items-center p-4 bg-gray-900 border-b border-gray-800">
+        <div className="text-xl font-bold text-emerald-400 cursor-pointer" onClick={() => setCurrentPage('home')}>
+          ميدان التحليل
+        </div>
+        <div className="space-x-4 space-x-reverse">
+          <button 
+            onClick={() => setCurrentPage('home')}
+            className={`px-4 py-2 rounded text-sm transition ${currentPage === 'home' ? 'bg-emerald-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+          >
+            الرئيسية
+          </button>
+          <button 
+            onClick={() => setCurrentPage('payment')}
+            className={`px-4 py-2 rounded text-sm transition ${currentPage === 'payment' ? 'bg-emerald-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+          >
+            اشتراك / شحن المحفظة
+          </button>
+        </div>
+      </nav>
+
+      {/* المحتوى حسب الصفحة الحالية */}
+      {currentPage === 'home' ? (
+        /* واجهة المنصة الرئيسية */
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <div className="max-w-3xl bg-gray-900 p-8 rounded-2xl border border-gray-800 shadow-2xl mt-10">
+            <h1 className="text-3xl font-bold mb-4 text-yellow-400">جوائز للمنضبطين والملتزمين في بداية التحدي</h1>
+            <p className="text-gray-300 text-sm leading-relaxed mb-6">
+              لان الانضباط وإدارة الحركة تسجل اختبار الفعلي. هذه الجوائز مخصصة للمتداولين الذين يلتزمون بالأرقام ولا يستسلمون اليوم الاول حتى نهاية التحدي.
+            </p>
+            <div className="bg-gray-950 p-6 rounded-xl border border-gray-800 mb-6">
+              <div className="text-2xl font-mono text-emerald-400 mb-2">40,000 $</div>
+              <p className="text-xs text-gray-400">إجمالي الجوائز الكبرى للمتداولين</p>
+            </div>
+            <button 
+              onClick={() => setCurrentPage('payment')}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg"
+            >
+              انضم الآن وابدأ التحدي
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* صفحة الدفع الخاصة بالـ USDT */
+        <div className="flex flex-col items-center justify-center p-6 mt-6">
+          <div className="max-w-md w-full bg-gray-900 rounded-xl p-6 shadow-xl border border-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-center text-emerald-400">اشتراك ميدان التحليل</h2>
+            <p className="text-gray-300 text-sm mb-6 text-center">
+              لتفعيل اشتراكك، يرجى إتمام التحويل عبر شبكة <span className="font-bold text-yellow-400">TRC20</span> حصراً إلى العنوان أدناه:
+            </p>
+
+            <div className="mb-6">
+              <label className="block text-xs text-gray-400 mb-2">عنوان المحفظة (USDT - TRC20):</label>
+              <div className="flex items-center bg-gray-950 p-3 rounded-lg border border-gray-700">
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={walletAddress} 
+                  className="bg-transparent text-emerald-300 text-xs w-full outline-none font-mono"
+                />
+                <button 
+                  onClick={handleCopy}
+                  className="ml-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded transition"
+                >
+                  {copied ? 'تم النسخ!' : 'نسخ'}
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gray-950 p-4 rounded-lg border border-yellow-500/30 text-xs text-yellow-300/90 leading-relaxed mb-6">
+              ملاحظة هامة: تأكد من إرسال العملات عبر شبكة <b>TRC20</b> فقط لضمان وصول التحويل بنجاح، وبعد إتمام التحويل سيتم تفعيل حسابك مباشرة.
+            </div>
+
+            <button 
+              onClick={() => alert('تم إعلام الإدارة بانتظار التحويل')}
+              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition shadow-lg"
+            >
+              تم التحويل، متابعة
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
